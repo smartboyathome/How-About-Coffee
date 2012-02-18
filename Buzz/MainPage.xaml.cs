@@ -23,10 +23,25 @@ namespace Buzz
         public MainPage()
         {
             InitializeComponent();
-            name.IsChecked = true;
+            //name.IsChecked = true;
         }
 
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            InputScope scope = new InputScope();
+            InputScopeName scopeName = new InputScopeName();
 
+            contactFilterKind = FilterKind.DisplayName;
+            scopeName.NameValue = InputScopeNameValue.Text;
+
+            scope.Names.Add(scopeName);
+            contactFilterString.InputScope = scope;
+            contactFilterString.Focus();
+
+            DoSearch();
+        }
+
+        /*
         private void FilterChange(object sender, RoutedEventArgs e)
         {
             String option = ((RadioButton)sender).Name;
@@ -60,8 +75,9 @@ namespace Buzz
             contactFilterString.InputScope = scope;
             contactFilterString.Focus();
         }
+        */
 
-        private void SearchContacts_Click(object sender, RoutedEventArgs e)
+        private void DoSearch()
         {
             ContactResultsLabel.Text = "results are loading...";
             ContactResultsData.DataContext = null;
@@ -71,6 +87,11 @@ namespace Buzz
             cons.SearchCompleted += new EventHandler<ContactsSearchEventArgs>(Contacts_SearchCompleted);
 
             cons.SearchAsync(contactFilterString.Text, contactFilterKind, "Contacts Test #1");
+        }
+
+        private void SearchContacts_Click(object sender, RoutedEventArgs e)
+        {
+            DoSearch();
         }
 
         void Contacts_SearchCompleted(object sender, ContactsSearchEventArgs e)
@@ -101,7 +122,14 @@ namespace Buzz
         {
             App.con = ((sender as ListBox).SelectedValue as Contact);
 
-            NavigationService.Navigate(new Uri("/ContactDetails.xaml", UriKind.Relative));
+            //NavigationService.Navigate(new Uri("/ContactDetails.xaml", UriKind.Relative));
+
+
+        }
+
+        private void contactFilterString_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DoSearch();
         }
     }
 }

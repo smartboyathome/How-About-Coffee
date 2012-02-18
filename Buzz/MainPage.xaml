@@ -12,12 +12,12 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded">
 
     <controls:PivotItem Header="contacts">
         <StackPanel Height="Auto" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
 
-            <Grid>
+            <Grid Name="mainpage">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -28,16 +28,16 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBox Grid.Row="0" Grid.ColumnSpan="2" Name="contactFilterString" />
-                <RadioButton Grid.Row="1" Grid.Column="0" Checked="FilterChange" Name="name" Content="name" />
+                <TextBox Grid.Row="0" Grid.ColumnSpan="2" Name="contactFilterString" TextChanged="contactFilterString_TextChanged" />
+                <!-- <RadioButton Grid.Row="1" Grid.Column="0" Checked="FilterChange" Name="name" Content="name" />
                 <RadioButton Grid.Row="1" Grid.Column="1" Checked="FilterChange" Name="phone" Content="phone"/>
-                <RadioButton Grid.Row="2" Grid.Column="0" Checked="FilterChange" Name="email" Content="email"/>
-                <Button Grid.Row="2" Grid.Column="1" Content="search" Click="SearchContacts_Click" />
+                <RadioButton Grid.Row="2" Grid.Column="0" Checked="FilterChange" Name="email" Content="email"/> -->
+                <!-- <Button Grid.Row="2" Grid.Column="1" Content="search" Click="SearchContacts_Click" /> -->
             </Grid>
 
             <TextBlock Name="ContactResultsLabel" Text="Search for contacts" TextWrapping="Wrap" Margin="12,0,0,0" />
 
-            <ListBox Name="ContactResultsData" ItemsSource="{Binding}" Tap="ContactResultsData_Tap" Height="497" Margin="24,0,0,0" Width="430">
+            <ListBox Name="ContactResultsData" ItemsSource="{Binding}" Tap="ContactResultsData_Tap" Height="497" Margin="24,0,0,0" Width="430" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Name="ContactResults" Text="{Binding Path=DisplayName, Mode=OneWay}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Margin="18,8,0,0" />
