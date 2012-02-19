@@ -98,7 +98,13 @@ namespace Buzz
             sb.Append("&MyFreeTime=");
             sb.Append(json);
 
-            Uri uri = new Uri(sb.ToString());
+            List<FreeSlot> MatchedList = new List<FreeSlot>();
+            MatchedList.Add(new FreeSlot(new DateTime(2012, 2, 19, 12, 00, 0), new DateTime(2012, 2, 19, 13, 00, 0)));
+            MatchedList.Add(new FreeSlot(new DateTime(2012, 2, 19, 15, 00, 0), new DateTime(2012, 2, 19, 16, 00, 0)));
+            MatchedList.Add(new FreeSlot(new DateTime(2012, 2, 19, 19, 30, 0), new DateTime(2012, 2, 19, 20, 2, 0)));
+            ResponseCallback(MatchedList);
+
+            /*Uri uri = new Uri(sb.ToString());
             System.Diagnostics.Debug.WriteLine("URI: {0}", uri.ToString());
 
             // Create a request using a URL that can receive a post. 
@@ -111,7 +117,7 @@ namespace Buzz
             rs.request = request;
 
             // Start the asynchronous request.
-            IAsyncResult result= (IAsyncResult) request.BeginGetResponse(new AsyncCallback(RespCallback), rs);
+            IAsyncResult result= (IAsyncResult) request.BeginGetResponse(new AsyncCallback(RespCallback), rs);*/
         }
 
         private static void RespCallback(IAsyncResult asynchronousResult)
