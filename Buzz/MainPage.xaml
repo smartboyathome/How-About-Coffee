@@ -14,40 +14,82 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded">
 
-    <controls:PivotItem Header="contacts">
-        <StackPanel Height="Auto" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <Grid Name="mainpage">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <TextBlock x:Name="ApplicationTitle"
+			    Text="How 'bout Coffee?"
+			    Style="{StaticResource PhoneTextNormalStyle}" 
+			    FontFamily="Calibri"  />
+
+            <Grid x:Name="ContentPanel"
+				Grid.Row="1">
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBox Grid.Row="0" Grid.ColumnSpan="2" Name="contactFilterString" TextChanged="contactFilterString_TextChanged" />
-                <!-- <RadioButton Grid.Row="1" Grid.Column="0" Checked="FilterChange" Name="name" Content="name" />
-                <RadioButton Grid.Row="1" Grid.Column="1" Checked="FilterChange" Name="phone" Content="phone"/>
-                <RadioButton Grid.Row="2" Grid.Column="0" Checked="FilterChange" Name="email" Content="email"/> -->
-                <!-- <Button Grid.Row="2" Grid.Column="1" Content="search" Click="SearchContacts_Click" /> -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Image Source="HowBoutCoffee-48x50.jpg" 
+					       Stretch="Fill"
+                           Grid.Column="0"
+                           Grid.Row="0"/>
+                <Image Source="HowBoutCoffee-48x50.jpg" 
+					       Stretch="Fill" 
+					       Grid.Column="2"
+                           Grid.Row="0"/>
+                <Image Source="HowBoutCoffee-48x50.jpg" 
+					       Grid.Column="2" 
+					       Grid.Row="2"/>
+                <Image Source="HowBoutCoffee-48x50.jpg" 
+					       Grid.Row="2"
+                           Grid.Column="0"/>
+
+
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0">
+                        <TextBox Name="contactFilterString" 
+                             TextChanged="contactFilterString_TextChanged" />
+
+                        <TextBlock Name="ContactResultsLabel" 
+                               Text="Search for contacts" 
+                               TextWrapping="Wrap" />
+                    </StackPanel>
+
+                <!-- controls:PivotItem Header="contacts" -->
+                    <ListBox Name="ContactResultsData" 
+                         ItemsSource="{Binding}" 
+                         Tap="ContactResultsData_Tap" 
+                         Grid.Row="1" TabIndex="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Name="ContactResults" 
+                                       Text="{Binding Path=DisplayName, Mode=OneWay}" 
+                                       FontSize="{StaticResource PhoneFontSizeExtraLarge}"  />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                <!-- /controls:PivotItem -->
+
+                <!-- <Button Name="Bigbutton" Click="Bigbutton_Click">Big Button</Button> -->
+                </Grid>
             </Grid>
-
-            <TextBlock Name="ContactResultsLabel" Text="Search for contacts" TextWrapping="Wrap" Margin="12,0,0,0" />
-
-            <ListBox Name="ContactResultsData" ItemsSource="{Binding}" Tap="ContactResultsData_Tap" Height="497" Margin="24,0,0,0" Width="430" >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Name="ContactResults" Text="{Binding Path=DisplayName, Mode=OneWay}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Margin="18,8,0,0" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-
-            <Button Name="Bigbutton" Click="Bigbutton_Click">Big Button</Button>
-        </StackPanel>
-    </controls:PivotItem>
+        </Grid>
     
     <!-- <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>

@@ -102,7 +102,7 @@ namespace Buzz
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show("");
+                //MessageBox.Show("");
             }
 
             FreeTimesAvailable(freeTimes);
