@@ -27,6 +27,8 @@ namespace Buzz
         {
             if (AvailableTimesScreen)
             {
+                txtHeading.Text = "Where to meet?";
+
                 Button1.Content = ""; // "Udupi Café";
                 ImageBrush ib = new ImageBrush();
                 ib.ImageSource = new BitmapImage(new Uri("/upudi.png", UriKind.Relative));
@@ -52,9 +54,10 @@ namespace Buzz
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            Button1.Content = "Monday Feb 20 at 3:00 pm";
-            Button2.Content = "Monday Feb 20 at 6:30 pm";
-            Button3.Content = "Tuesday Feb 21 at 11:30 am";
+            txtHeading.Text = "When to meet?";
+            Button1.Content = "Monday Feb 20\n3:00 pm";
+            Button2.Content = "Monday Feb 20\n6:30 pm";
+            Button3.Content = "Tuesday Feb 21\n11:30 am";
 
             //MessageBox.Show("Height: " + Button1.ActualHeight.ToString() + "\nWidth: " + Button1.ActualWidth.ToString());
         }

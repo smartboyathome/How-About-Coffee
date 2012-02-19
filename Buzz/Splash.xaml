@@ -74,12 +74,6 @@
                     </Grid.ColumnDefinitions>
                 </Grid>
 
-                <TextBlock x:Name="instructions" 
-                	Grid.Row="1" 
-                	TextWrapping="Wrap" 
-                	FontStretch="Expanded" 
-                	Grid.Column="1" Text="Page 1"/>
-
                 <!-- Sound element from www.freesoundeffectsandloops.comFREEBICPEN.wav-->
 
                 <MediaElement x:Name ="Sounds"

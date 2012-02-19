@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
+using System.Windows.Threading;
 
 namespace Buzz
 {
@@ -35,8 +36,20 @@ namespace Buzz
             NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }
 
+        DispatcherTimer timer = new DispatcherTimer();
+
         private void ContentPanel_Loaded(object sender, RoutedEventArgs e)
         {
+            timer.Interval = new TimeSpan(0, 0, 0, 2, 500);
+            timer.Tick += TimerTick;
+            timer.Start();
+        }
+
+        void TimerTick(Object sender, EventArgs e)
+        {
+            Sounds.Stop();
+            timer.Stop();
+            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }
     }
 }
