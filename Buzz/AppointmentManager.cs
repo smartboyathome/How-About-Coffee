@@ -14,19 +14,19 @@ using System.Collections.Generic;
 
 namespace Buzz
 {
+    public struct Slot
+    {
+        public DateTime Start;
+        public DateTime End;
+        public Slot(DateTime s, DateTime e)
+        {
+            Start = s;
+            End = e;
+        }
+    }
+
     public class AppointmentManager
     {
-        public struct Slot
-        {
-            public DateTime Start;
-            public DateTime End;
-            public Slot(DateTime s, DateTime e)
-            {
-                Start = s;
-                End = e;
-            }
-        }
-
         public AppointmentManager()
         {
         }
