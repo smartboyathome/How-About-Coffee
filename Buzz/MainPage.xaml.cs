@@ -131,5 +131,10 @@ namespace Buzz
         {
             DoSearch();
         }
+
+        private void Bigbutton_Click(object sender, RoutedEventArgs e)
+        {
+            ServiceInterface.SendFreeList(new List<FreeSlot>());
+        }
     }
 }
