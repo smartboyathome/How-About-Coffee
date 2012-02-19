@@ -126,6 +126,8 @@ namespace Buzz
 
             List<FreeSlot> FreeList = new List<FreeSlot>();
 
+            //AppointmentManager 
+
             FreeList.Add(new FreeSlot(DateTime.UtcNow, DateTime.UtcNow));
 
             ServiceInterface.SendFreeList("2067130182", "2067131688", FreeList);

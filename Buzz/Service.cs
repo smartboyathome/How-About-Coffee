@@ -103,7 +103,7 @@ namespace Buzz
                 // Begin the Reading of the contents of the HTML page and print it to the console.
                 //IAsyncResult asynchronousInputRead = responseStream.BeginRead(myRequestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
             }
-            catch (WebException e)
+            catch (WebException)
             {
                 // Need to handle the exception
             }
