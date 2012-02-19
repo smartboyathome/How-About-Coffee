@@ -105,6 +105,7 @@
 				Opacity="0" 
                 Click="homePage_Click" />
         <MediaElement x:Name="Animation" Margin="-8,8,8,-8" Source="/logo4.wmv" Stretch="Fill" Grid.Row="1" MediaEnded="Splash_MediaEnded"/>
+        <Image Margin="0,0,0,-32" Grid.Row="1" Source="/SplashScreenImage.jpg" Stretch="Fill"/>
 
     </Grid>
 
