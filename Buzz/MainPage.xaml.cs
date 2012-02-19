@@ -36,17 +36,19 @@ namespace Buzz
 
             scope.Names.Add(scopeName);
             contactFilterString.InputScope = scope;
-            contactFilterString.Focus();
+            //contactFilterString.Focus();
 
             DoSearch();
-            
+
+            ContactResultsData.Focus();
+
             CheckInTimer.Interval = new TimeSpan(0, 0, 5);
             CheckInTimer.Tick += TimerTick;
         }
 
         private void DoSearch()
         {
-            ContactResultsLabel.Text = "results are loading...";
+            //ContactResultsLabel.Text = "results are loading...";
             ContactResultsData.DataContext = null;
 
             Microsoft.Phone.UserData.Contacts cons = new Microsoft.Phone.UserData.Contacts();
@@ -75,11 +77,11 @@ namespace Buzz
 
             if (ContactResultsData.Items.Count > 0)
             {
-                ContactResultsLabel.Text = "results (tap name for details...)";
+                //ContactResultsLabel.Text = "results (tap name for details...)";
             }
             else
             {
-                ContactResultsLabel.Text = "no results";
+                //ContactResultsLabel.Text = "no results";
             }
         }
 
@@ -119,12 +121,14 @@ namespace Buzz
             }
             else
             {
-                MessageBox.Show(MatchedList.Count.ToString());
+                //MessageBox.Show(MatchedList.Count.ToString());
             }
 
             AvailableTimes at = new AvailableTimes();
-            NavigationService.Navigate(new Uri("/AvailableTimes.xaml"));
+            NavigationService.Navigate(new Uri("/AvailableTimes.xaml", UriKind.Relative));
         }
+
+        
 
         void TimerTick(Object sender, EventArgs e)
         {
