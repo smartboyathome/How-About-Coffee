@@ -60,88 +60,31 @@ namespace Buzz
         public static void SendFreeList(string MyID, string TheirID, List<FreeSlot> FreeList)
         {
             string json = BuildJson(FreeList);
-            test(MyID, TheirID, json);
-        }
 
-        public static void test(string MyID, string TheirID, string json)
-        {
-            // Create a request using a URL that can receive a post. 
-            HttpWebRequest request = (HttpWebRequest)  WebRequest.Create(HOST_NAME);
-
-            // Set the Method property of the request to POST.
-            request.Method = "POST";
-
-            StringBuilder sb = new StringBuilder();
-            sb.Append("MyId=");
+            StringBuilder sb = new StringBuilder(HOST_NAME);
+            sb.Append("init.php?MyID=");
             sb.Append(MyID);
-            sb.Append("&TheirId=");
+            sb.Append("&TheirID=");
             sb.Append(TheirID);
             sb.Append("&MinLength=");
             sb.Append(MIN_LENGTH.Ticks.ToString());
             sb.Append("&MyFreeTime=");
             sb.Append(json);
-            
-            // Create POST data and convert it to a byte array.
-            byte[] byteArray = Encoding.UTF8.GetBytes(sb.ToString());
 
-            // Set the ContentType property of the WebRequest.
-            request.ContentType = "application/x-www-form-urlencoded";
+            Uri uri = new Uri(sb.ToString());
+            MessageBox.Show(uri.ToString());
 
-            MessageBox.Show(sb.ToString());
-            
-            // Set the ContentLength property of the WebRequest.
-            //request.ContentLength = byteArray.Length;
-            
-            // Get the request stream.
-            //using (Stream dataStream = request.GetRequestStream())
-            {
-                //dataStream.Write(byteArray, 0, byteArray.Length);
-            }
+            // Create a request using a URL that can receive a post. 
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(uri);
 
-            test();
-        }
+            // Set the Method property of the request to POST.
+            request.Method = "POST";
 
-        static void test()
-        {
-            string outputBlock = "";
+            RequestState rs = new RequestState();
+            rs.request = request;
 
-            try
-            {      
-                System.Uri uri = new Uri("http://www.contoso.com");
-
-                // Create a HttpWebrequest object to the desired URL.
-                HttpWebRequest myHttpWebRequest1= (HttpWebRequest)WebRequest.Create(uri);
-
-                // Create an instance of the RequestState and assign the previous myHttpWebRequest1
-                // object to it's request field.  
-                RequestState myRequestState = new RequestState();  
-                myRequestState.request = myHttpWebRequest1;
-
-                // Start the asynchronous request.
-                IAsyncResult result=
-                (IAsyncResult) myHttpWebRequest1.BeginGetResponse(new AsyncCallback(RespCallback),myRequestState);
-            }
-            catch(WebException e)
-            {
-                outputBlock += "\nException raised!\n";
-                outputBlock += "Message: ";
-                outputBlock += e.Message;
-                outputBlock += "\nStatus: ";
-                outputBlock += e.Status;
-                outputBlock += "\n";
-            }
-            catch(Exception e)
-            {
-                outputBlock += "\nException raised!\n";
-                outputBlock += "\nMessage: ";
-                outputBlock += e.Message;
-                outputBlock += "\n";
-            }
-
-            if (outputBlock != "")
-            {
-                MessageBox.Show("oh shit!\n\n" + outputBlock);
-            }
+            // Start the asynchronous request.
+            IAsyncResult result= (IAsyncResult) request.BeginGetResponse(new AsyncCallback(RespCallback), rs);
         }
 
         private static void RespCallback(IAsyncResult asynchronousResult)
@@ -160,7 +103,7 @@ namespace Buzz
                 // Begin the Reading of the contents of the HTML page and print it to the console.
                 //IAsyncResult asynchronousInputRead = responseStream.BeginRead(myRequestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
             }
-            catch (WebException e)
+            catch (WebException)
             {
                 // Need to handle the exception
             }

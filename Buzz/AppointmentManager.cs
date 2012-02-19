@@ -12,7 +12,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.UserData;
 using System.Collections.Generic;
 
-namespace AppointmentDemo
+namespace Buzz
 {
     public class AppointmentManager
     {
@@ -99,12 +99,9 @@ namespace AppointmentDemo
 
                 }
                 freeTimes.Add(new Slot(busyTimes[busyTimes.Count - 1].End, endTimeOfDay));
-
-                int j = 0;
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
-                int j = 0;
             }
 
             FreeTimesAvailable(freeTimes);
