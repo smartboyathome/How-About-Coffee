@@ -173,7 +173,7 @@ namespace Buzz
                     }
                     responseStream.Close();
 
-                    //ResponseCallback(MatchedList);
+                    ResponseCallback(MatchedList);
                 }
             }
             catch (WebException)

@@ -104,9 +104,17 @@ namespace Buzz
                     FreeList.Add(new FreeSlot(s));
                 }
 
+                ServiceInterface.ResponseCallback += ResponseCallback;
+
                 //ServiceInterface.SendFreeList("2067130182", "2067131688", FreeList);  //1
                 ServiceInterface.SendFreeList("2067131688", "2067130182", FreeList);  //2
             }
+        }
+
+        void ResponseCallback(List<FreeSlot> MatchedList)
+        {
+            AvailableTimes at = new AvailableTimes();
+            NavigationService.Navigate(new Uri("/AvailableTimes.xaml"));
         }
 
         void TimerTick(Object sender, EventArgs e)
