@@ -17,40 +17,28 @@ namespace Buzz
 {
     public struct FreeSlot
     {
+        public const long SCALE = 100000000;
         public long Start;
         public long End;
         public FreeSlot(DateTime s, DateTime e)
         {
-            Start = s.Ticks;
-            End = e.Ticks;
+            Start = s.Ticks / SCALE;
+            End = e.Ticks / SCALE;
         }
         public FreeSlot(Slot s)
         {
-            Start = s.Start.Ticks;
-            End = s.End.Ticks;
+            Start = s.Start.Ticks / SCALE;
+            End = s.End.Ticks / SCALE;
         }
     };
 
     public static class ServiceInterface
     {
-        //public List<FreeSlot> AvailableList { get; set; }
-
-        /*
-        txtOutput1.Text = "Create a User object and serialize it.";
-        string json = WriteFromObject();
-        txtOutput2.Text = json.ToString(); // Displays: {"Age":42,"Name":"Bob"}
-
-        txtOutput3.Text = "Deserialize the data to a User object.";
-        string jsonString = "{'Name':'Bill', 'Age':53}";
-        User deserializedUser = ReadToObject(jsonString);
-        txtOutput4.Text = deserializedUser.Name; // Displays: Bill
-        txtOutput5.Text = deserializedUser.Age.ToString(); // Displays: 53
-        */
-
         private static TimeSpan MIN_LENGTH = new TimeSpan(0, 30, 0); // 30 min in seconds
         private const string HOST_NAME = @"http://coffee.smartboyssite.net/";
+        const int BUFFER_SIZE = 1024;
 
-        private static string BuildJson(List<FreeSlot> FreeList)
+        private static string ConstructJson(List<FreeSlot> FreeList)
         {
             MemoryStream ms = new MemoryStream();
             DataContractJsonSerializer ser = new DataContractJsonSerializer(FreeList.GetType());
@@ -61,10 +49,25 @@ namespace Buzz
 
             return Encoding.UTF8.GetString(json, 0, json.Length);
         }
-        
+
+        private static List<FreeSlot> DeconstructJson(string json)
+        {
+            /*
+            MemoryStream ms = new MemoryStream();
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(FreeList.GetType());
+
+            ser.WriteObject(ms, FreeList);
+            byte[] json = ms.ToArray();
+            ms.Close();
+
+            return Encoding.UTF8.GetString(json, 0, json.Length);
+            */
+            return null;
+        }
+
         public static void SendFreeList(string MyID, string TheirID, List<FreeSlot> FreeList)
         {
-            string json = BuildJson(FreeList);
+            string json = ConstructJson(FreeList);
 
             StringBuilder sb = new StringBuilder(HOST_NAME);
             sb.Append("init.php?MyID=");
@@ -72,12 +75,12 @@ namespace Buzz
             sb.Append("&TheirID=");
             sb.Append(TheirID);
             sb.Append("&MinLength=");
-            sb.Append(MIN_LENGTH.Ticks.ToString());
+            sb.Append((MIN_LENGTH.Ticks / FreeSlot.SCALE).ToString());
             sb.Append("&MyFreeTime=");
             sb.Append(json);
 
             Uri uri = new Uri(sb.ToString());
-            MessageBox.Show(uri.ToString());
+            System.Diagnostics.Debug.WriteLine("URI: {0}", uri.ToString());
 
             // Create a request using a URL that can receive a post. 
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(uri);
@@ -97,16 +100,16 @@ namespace Buzz
             try
             {
                 // State of request is asynchronous.
-                RequestState myRequestState=(RequestState) asynchronousResult.AsyncState;
-                HttpWebRequest  myHttpWebRequest2=myRequestState.request;
-                myRequestState.response = (HttpWebResponse) myHttpWebRequest2.EndGetResponse(asynchronousResult);
+                RequestState myRequestState = (RequestState)asynchronousResult.AsyncState;
+                HttpWebRequest myHttpWebRequest2 = myRequestState.request;
+                myRequestState.response = (HttpWebResponse)myHttpWebRequest2.EndGetResponse(asynchronousResult);
 
                 // Read the response into a Stream object.
                 Stream responseStream = myRequestState.response.GetResponseStream();
                 myRequestState.streamResponse = responseStream;
 
                 // Begin the Reading of the contents of the HTML page and print it to the console.
-                //IAsyncResult asynchronousInputRead = responseStream.BeginRead(myRequestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
+                IAsyncResult asynchronousInputRead = responseStream.BeginRead(myRequestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
             }
             catch (WebException)
             {
@@ -114,24 +117,49 @@ namespace Buzz
             }
         }
 
-        /*
-        // Create a User object and serialize it to a JSON stream.
-        public static string WriteFromObject()
+        private static void ReadCallBack(IAsyncResult asyncResult)
         {
-            //Create User object.
-            User user = new User("Bob", 42);
+            try
+            {
+                RequestState myRequestState = (RequestState)asyncResult.AsyncState;
+                Stream responseStream = myRequestState.streamResponse;
+                int read = responseStream.EndRead(asyncResult);
 
-            //Create a stream to serialize the object to.
-            MemoryStream ms = new MemoryStream();
+                // Read the HTML page and then do something with it
+                if (read > 0)
+                {
+                    myRequestState.requestData.Append(Encoding.UTF8.GetString(myRequestState.BufferRead, 0, read));
+                    IAsyncResult asynchronousResult = responseStream.BeginRead(myRequestState.BufferRead, 0, BUFFER_SIZE, new AsyncCallback(ReadCallBack), myRequestState);
+                }
+                else
+                {
+                    List<FreeSlot> MatchedList = null;
 
-            // Serializer the User object to the stream.
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(User));
-            ser.WriteObject(ms, user);
-            byte[] json = ms.ToArray();
-            ms.Close();
-            return Encoding.UTF8.GetString(json, 0, json.Length);
+                    if (myRequestState.requestData.Length > 1)
+                    {
+                        string stringContent;
+                        stringContent = myRequestState.requestData.ToString();
+
+                        if (stringContent != "false")
+                        {
+                            // We got data!!
+                            // Need to polulate the list....
+                            MatchedList = new List<FreeSlot>();
+                        }
+                    }
+                    responseStream.Close();
+
+                    //ResponseCallback(MatchedList);
+                }
+            }
+            catch (WebException)
+            {
+                // Need to handle the exception
+            }
         }
-*/
+
+        public delegate void ResponseCallbackDelegate(List<FreeSlot> MatchedList);
+        public static event ResponseCallbackDelegate ResponseCallback;
     }
 
     public class RequestState
@@ -143,6 +171,7 @@ namespace Buzz
         public HttpWebRequest request;
         public HttpWebResponse response;
         public Stream streamResponse;
+        public Decoder StreamDecode = Encoding.UTF8.GetDecoder();
 
         public RequestState()
         {
@@ -151,7 +180,5 @@ namespace Buzz
             request = null;
             streamResponse = null;
         }
-        public delegate void OnResultDelegate(IAsyncResult result);
-        public event OnResultDelegate OnResult;
     }
 }

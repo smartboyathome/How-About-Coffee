@@ -41,7 +41,7 @@ namespace Buzz
             DateTime start = DateTime.Now;
 
             //Hard Code to 7 days
-            DateTime end = start.AddDays(1);
+            DateTime end = start.AddDays(7);
 
             //Hard limit
             int max = 5;
@@ -100,8 +100,9 @@ namespace Buzz
                 }
                 freeTimes.Add(new Slot(busyTimes[busyTimes.Count - 1].End, endTimeOfDay));
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
+                MessageBox.Show("");
             }
 
             FreeTimesAvailable(freeTimes);

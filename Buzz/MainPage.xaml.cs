@@ -138,10 +138,12 @@ namespace Buzz
 
                 foreach (Slot s in list)
                 {
+                    System.Diagnostics.Debug.WriteLine("Start {0}   End {1}", s.Start.Ticks / 100000000, s.End.Ticks / 100000000);
                     FreeList.Add(new FreeSlot(s));
                 }
 
-                ServiceInterface.SendFreeList("2067130182", "2067131688", FreeList);
+                //ServiceInterface.SendFreeList("2067130182", "2067131688", FreeList);  //1
+                ServiceInterface.SendFreeList("2067131688", "2067130182", FreeList);  //2
             }
         }
 
@@ -152,11 +154,12 @@ namespace Buzz
 
         private void Bigbutton_Click(object sender, RoutedEventArgs e)
         {
-            List<FreeSlot> FreeList = new List<FreeSlot>();
-            
-            FreeList.Add(new FreeSlot(DateTime.UtcNow, DateTime.UtcNow));
+            List<Slot> FreeList = new List<Slot>();
 
-            ServiceInterface.SendFreeList("2067130182", "2067131688", FreeList);
+            FreeList.Add(new Slot(new DateTime(2012, 2, 19, 12, 30, 0), new DateTime(2012, 2, 19, 16, 20, 0)));
+            FreeList.Add(new Slot(new DateTime(2012, 2, 20, 11, 5, 0), new DateTime(2012, 2, 20, 13, 2, 0)));
+
+            SendToServer(FreeList);
         }
     }
 }
