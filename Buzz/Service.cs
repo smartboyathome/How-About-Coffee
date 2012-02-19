@@ -24,6 +24,11 @@ namespace Buzz
             Start = s.Ticks;
             End = e.Ticks;
         }
+        public FreeSlot(Slot s)
+        {
+            Start = s.Start.Ticks;
+            End = s.End.Ticks;
+        }
     };
 
     public static class ServiceInterface

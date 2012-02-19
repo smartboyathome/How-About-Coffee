@@ -124,13 +124,25 @@ namespace Buzz
 
             //NavigationService.Navigate(new Uri("/ContactDetails.xaml", UriKind.Relative));
 
-            List<FreeSlot> FreeList = new List<FreeSlot>();
+            AppointmentManager am = new AppointmentManager();
 
-            //AppointmentManager 
+            am.FreeTimesAvailable += SendToServer;
+            am.GetFreeTime();
+        }
 
-            FreeList.Add(new FreeSlot(DateTime.UtcNow, DateTime.UtcNow));
+        private void SendToServer(List<Slot> list)
+        {
+            if (list.Count > 0)
+            {
+                List<FreeSlot> FreeList = new List<FreeSlot>();
 
-            ServiceInterface.SendFreeList("2067130182", "2067131688", FreeList);
+                foreach (Slot s in list)
+                {
+                    FreeList.Add(new FreeSlot(s));
+                }
+
+                ServiceInterface.SendFreeList("2067130182", "2067131688", FreeList);
+            }
         }
 
         private void contactFilterString_TextChanged(object sender, TextChangedEventArgs e)
