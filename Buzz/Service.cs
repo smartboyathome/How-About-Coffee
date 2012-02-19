@@ -146,5 +146,7 @@ namespace Buzz
             request = null;
             streamResponse = null;
         }
+        public delegate void OnResultDelegate(IAsyncResult result);
+        public event OnResultDelegate OnResult;
     }
 }
