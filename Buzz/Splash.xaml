@@ -1,0 +1,123 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Buzz.Splash"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <Grid x:Name="TitlePanel" 
+              Grid.Row="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--ContentPanel - place additional content here-->
+
+            <Grid x:Name="ContentPanel"
+                  Grid.Row="1" Loaded="ContentPanel_Loaded">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+
+                <!-- Gameplay Box -->
+                <TextBlock Name="txtblk"
+                           Grid.Row="1"
+                           Grid.Column="1"
+                           VerticalAlignment="Bottom" 
+                           Margin="0,0,-3,25" 
+                           d:LayoutOverrides="Width"/>
+
+                <Grid HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Grid.Row="1"
+                      Grid.Column="1">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+
+                <TextBlock x:Name="instructions" 
+                	Grid.Row="1" 
+                	TextWrapping="Wrap" 
+                	FontStretch="Expanded" 
+                	Grid.Column="1" Text="Page 1"/>
+
+                <!-- Sound element from www.freesoundeffectsandloops.comFREEBICPEN.wav-->
+
+                <MediaElement x:Name ="Sounds"
+                              Grid.Column="2"
+                              Grid.Row="2"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Bottom"
+                              Source="/click.wav"
+                              AutoPlay="false"
+                              Volume="1.0" 
+                              IsHitTestVisible="False" 
+                              Visibility="Collapsed" />
+            </Grid>
+        </Grid>
+
+        <Button x:Name="homePage"
+		        Content="" 
+		        Height="90" 
+				Margin="0,0,0,76" 
+				Grid.Row="1" 
+		        VerticalAlignment="Bottom" 
+				Background="{x:Null}" 
+				Opacity="0" 
+                Click="homePage_Click" />
+        <MediaElement x:Name="Animation" Margin="-8,8,8,-8" Source="/logo4.wmv" Stretch="Fill" Grid.Row="1" MediaEnded="Splash_MediaEnded"/>
+
+    </Grid>
+
+
+    <!--Sample code showing usage of ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+</phone:PhoneApplicationPage>
