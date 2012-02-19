@@ -48,7 +48,7 @@ namespace Buzz
             }
             else
             {
-                
+                NavigationService.Navigate(new Uri("/ConfirmationPage.xaml", UriKind.Relative));
             }
         }
 

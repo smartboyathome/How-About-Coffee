@@ -124,7 +124,6 @@ namespace Buzz
                 //MessageBox.Show(MatchedList.Count.ToString());
             }
 
-            AvailableTimes at = new AvailableTimes();
             NavigationService.Navigate(new Uri("/AvailableTimes.xaml", UriKind.Relative));
         }
 
