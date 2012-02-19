@@ -67,6 +67,9 @@
     <Compile Include="AvailableTimes.xaml.cs">
       <DependentUpon>AvailableTimes.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ConfirmationPage.xaml.cs">
+      <DependentUpon>ConfirmationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Contacts.xaml.cs">
       <DependentUpon>Contacts.xaml</DependentUpon>
     </Compile>
@@ -87,6 +90,10 @@
     <Page Include="AvailableTimes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ConfirmationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Contacts.xaml">
       <SubType>Designer</SubType>
@@ -112,6 +119,7 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="confirmed.png" />
     <Content Include="kitanda.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
