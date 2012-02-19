@@ -17,7 +17,8 @@ namespace Buzz
 {
     public struct FreeSlot
     {
-        public const long SCALE = 100000000;
+        // Ticks are in 100 nano second increments, scale to seconds
+        public const long SCALE = (1000 * 1000 * 100);
         public long Start;
         public long End;
         public FreeSlot(DateTime s, DateTime e)
@@ -50,6 +51,15 @@ namespace Buzz
             return Encoding.UTF8.GetString(json, 0, json.Length);
         }
 
+        private static List<FreeSlot> DeconstructJson(Stream stream)
+        {
+            List<FreeSlot> list;
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<FreeSlot>));
+            list = (List<FreeSlot>) ser.ReadObject(stream);
+
+            return list;
+        }
+
         public static void CheckForResults(string MyID, string TheirID)
         {
             StringBuilder sb = new StringBuilder(HOST_NAME);
@@ -72,21 +82,6 @@ namespace Buzz
 
             // Start the asynchronous request.
             IAsyncResult result= (IAsyncResult) request.BeginGetResponse(new AsyncCallback(RespCallback), rs);
-        }
-
-        private static List<FreeSlot> DeconstructJson(string json)
-        {
-            /*
-            MemoryStream ms = new MemoryStream();
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(FreeList.GetType());
-
-            ser.WriteObject(ms, FreeList);
-            byte[] json = ms.ToArray();
-            ms.Close();
-
-            return Encoding.UTF8.GetString(json, 0, json.Length);
-            */
-            return null;
         }
 
         public static void SendFreeList(string MyID, string TheirID, List<FreeSlot> FreeList)
@@ -168,12 +163,12 @@ namespace Buzz
                         {
                             // We got data!!
                             // Need to polulate the list....
-                            MatchedList = new List<FreeSlot>();
+                            MatchedList = DeconstructJson(myRequestState.streamResponse);
                         }
                     }
                     responseStream.Close();
 
-                    //ResponseCallback(MatchedList);
+                    ResponseCallback(MatchedList);
                 }
             }
             catch (WebException)

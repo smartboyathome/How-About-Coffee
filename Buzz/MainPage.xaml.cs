@@ -104,13 +104,28 @@ namespace Buzz
                     FreeList.Add(new FreeSlot(s));
                 }
 
+                ServiceInterface.ResponseCallback += ResponseCallback;
+
                 //ServiceInterface.SendFreeList("2067130182", "2067131688", FreeList);  //1
                 ServiceInterface.SendFreeList("2067131688", "2067130182", FreeList);  //2
             }
         }
 
+        void ResponseCallback(List<FreeSlot> MatchedList)
+        {
+            if (MatchedList == null)
+            {
+                //CheckInTimer.Start();
+            }
+            else
+            {
+                MessageBox.Show(MatchedList.Count.ToString());
+            }
+        }
+
         void TimerTick(Object sender, EventArgs e)
         {
+            CheckInTimer.Stop();
             ServiceInterface.CheckForResults("2067130182", "2067131688");
         }
 
