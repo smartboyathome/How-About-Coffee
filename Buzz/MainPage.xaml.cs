@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-
+using System.Windows.Threading;
 using Microsoft.Phone.UserData;
 
 namespace Buzz
@@ -18,12 +18,12 @@ namespace Buzz
     public partial class MainPage : PhoneApplicationPage
     {
         FilterKind contactFilterKind = FilterKind.None;
+        DispatcherTimer CheckInTimer = new DispatcherTimer();
 
         // Constructor
         public MainPage()
         {
             InitializeComponent();
-            //name.IsChecked = true;
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
@@ -39,43 +39,10 @@ namespace Buzz
             contactFilterString.Focus();
 
             DoSearch();
+            
+            CheckInTimer.Interval = new TimeSpan(0, 0, 5);
+            CheckInTimer.Tick += TimerTick;
         }
-
-        /*
-        private void FilterChange(object sender, RoutedEventArgs e)
-        {
-            String option = ((RadioButton)sender).Name;
-
-            InputScope scope = new InputScope();
-            InputScopeName scopeName = new InputScopeName();
-
-            switch (option)
-            {
-                case "name":
-                    contactFilterKind = FilterKind.DisplayName;
-                    scopeName.NameValue = InputScopeNameValue.Text;
-                    break;
-
-                case "phone":
-                    contactFilterKind = FilterKind.PhoneNumber;
-                    scopeName.NameValue = InputScopeNameValue.TelephoneNumber;
-                    break;
-
-                case "email":
-                    contactFilterKind = FilterKind.EmailAddress;
-                    scopeName.NameValue = InputScopeNameValue.EmailSmtpAddress;
-                    break;
-
-                default:
-                    contactFilterKind = FilterKind.None;
-                    break;
-            }
-
-            scope.Names.Add(scopeName);
-            contactFilterString.InputScope = scope;
-            contactFilterString.Focus();
-        }
-        */
 
         private void DoSearch()
         {
@@ -96,8 +63,6 @@ namespace Buzz
 
         void Contacts_SearchCompleted(object sender, ContactsSearchEventArgs e)
         {
-            //MessageBox.Show(e.State.ToString());
-
             try
             {
                 //Bind the results to the list box that displays them in the UI
@@ -121,9 +86,6 @@ namespace Buzz
         private void ContactResultsData_Tap(object sender, GestureEventArgs e)
         {
             App.con = ((sender as ListBox).SelectedValue as Contact);
-
-            //NavigationService.Navigate(new Uri("/ContactDetails.xaml", UriKind.Relative));
-
             AppointmentManager am = new AppointmentManager();
 
             am.FreeTimesAvailable += SendToServer;
@@ -145,6 +107,11 @@ namespace Buzz
                 //ServiceInterface.SendFreeList("2067130182", "2067131688", FreeList);  //1
                 ServiceInterface.SendFreeList("2067131688", "2067130182", FreeList);  //2
             }
+        }
+
+        void TimerTick(Object sender, EventArgs e)
+        {
+            ServiceInterface.CheckForResults("2067130182", "2067131688");
         }
 
         private void contactFilterString_TextChanged(object sender, TextChangedEventArgs e)

@@ -50,6 +50,30 @@ namespace Buzz
             return Encoding.UTF8.GetString(json, 0, json.Length);
         }
 
+        public static void CheckForResults(string MyID, string TheirID)
+        {
+            StringBuilder sb = new StringBuilder(HOST_NAME);
+            sb.Append("result.php?MyID=");
+            sb.Append(MyID);
+            sb.Append("&TheirID=");
+            sb.Append(TheirID);
+
+            Uri uri = new Uri(sb.ToString());
+            MessageBox.Show(uri.ToString());
+
+            // Create a request using a URL that can receive a post. 
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(uri);
+
+            // Set the Method property of the request to POST.
+            request.Method = "POST";
+
+            RequestState rs = new RequestState();
+            rs.request = request;
+
+            // Start the asynchronous request.
+            IAsyncResult result= (IAsyncResult) request.BeginGetResponse(new AsyncCallback(RespCallback), rs);
+        }
+
         private static List<FreeSlot> DeconstructJson(string json)
         {
             /*
