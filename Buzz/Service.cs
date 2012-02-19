@@ -33,22 +33,32 @@ namespace Buzz
 
     public static class ServiceInterface
     {
-        //public List<FreeSlot> AvailableList { get; set; }
-
-        /*
-        txtOutput1.Text = "Create a User object and serialize it.";
-        string json = WriteFromObject();
-        txtOutput2.Text = json.ToString(); // Displays: {"Age":42,"Name":"Bob"}
-
-        txtOutput3.Text = "Deserialize the data to a User object.";
-        string jsonString = "{'Name':'Bill', 'Age':53}";
-        User deserializedUser = ReadToObject(jsonString);
-        txtOutput4.Text = deserializedUser.Name; // Displays: Bill
-        txtOutput5.Text = deserializedUser.Age.ToString(); // Displays: 53
-        */
-
         private static TimeSpan MIN_LENGTH = new TimeSpan(0, 30, 0); // 30 min in seconds
         private const string HOST_NAME = @"http://coffee.smartboyssite.net/";
+
+        public static void CheckForResults(string MyID, string TheirID)
+        {
+            StringBuilder sb = new StringBuilder(HOST_NAME);
+            sb.Append("result.php?MyID=");
+            sb.Append(MyID);
+            sb.Append("&TheirID=");
+            sb.Append(TheirID);
+
+            Uri uri = new Uri(sb.ToString());
+            MessageBox.Show(uri.ToString());
+
+            // Create a request using a URL that can receive a post. 
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(uri);
+
+            // Set the Method property of the request to POST.
+            request.Method = "POST";
+
+            RequestState rs = new RequestState();
+            rs.request = request;
+
+            // Start the asynchronous request.
+            IAsyncResult result= (IAsyncResult) request.BeginGetResponse(new AsyncCallback(RespCallback), rs);
+        }
 
         private static string BuildJson(List<FreeSlot> FreeList)
         {
@@ -113,25 +123,6 @@ namespace Buzz
                 // Need to handle the exception
             }
         }
-
-        /*
-        // Create a User object and serialize it to a JSON stream.
-        public static string WriteFromObject()
-        {
-            //Create User object.
-            User user = new User("Bob", 42);
-
-            //Create a stream to serialize the object to.
-            MemoryStream ms = new MemoryStream();
-
-            // Serializer the User object to the stream.
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(User));
-            ser.WriteObject(ms, user);
-            byte[] json = ms.ToArray();
-            ms.Close();
-            return Encoding.UTF8.GetString(json, 0, json.Length);
-        }
-*/
     }
 
     public class RequestState
