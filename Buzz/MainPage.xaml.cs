@@ -113,12 +113,22 @@ namespace Buzz
 
         void ResponseCallback(List<FreeSlot> MatchedList)
         {
+            if (MatchedList == null)
+            {
+                //CheckInTimer.Start();
+            }
+            else
+            {
+                MessageBox.Show(MatchedList.Count.ToString());
+            }
+
             AvailableTimes at = new AvailableTimes();
             NavigationService.Navigate(new Uri("/AvailableTimes.xaml"));
         }
 
         void TimerTick(Object sender, EventArgs e)
         {
+            CheckInTimer.Stop();
             ServiceInterface.CheckForResults("2067130182", "2067131688");
         }
 
