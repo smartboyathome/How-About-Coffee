@@ -124,7 +124,11 @@ namespace Buzz
 
             //NavigationService.Navigate(new Uri("/ContactDetails.xaml", UriKind.Relative));
 
+            List<FreeSlot> FreeList = new List<FreeSlot>();
 
+            FreeList.Add(new FreeSlot(DateTime.UtcNow, DateTime.UtcNow));
+
+            ServiceInterface.SendFreeList("2067130182", "2067131688", FreeList);
         }
 
         private void contactFilterString_TextChanged(object sender, TextChangedEventArgs e)
@@ -136,9 +140,6 @@ namespace Buzz
         {
             List<FreeSlot> FreeList = new List<FreeSlot>();
             
-            FreeList.Add(new FreeSlot(DateTime.UtcNow, DateTime.UtcNow));
-            FreeList.Add(new FreeSlot(DateTime.UtcNow, DateTime.UtcNow));
-            FreeList.Add(new FreeSlot(DateTime.UtcNow, DateTime.UtcNow));
             FreeList.Add(new FreeSlot(DateTime.UtcNow, DateTime.UtcNow));
 
             ServiceInterface.SendFreeList("2067130182", "2067131688", FreeList);
