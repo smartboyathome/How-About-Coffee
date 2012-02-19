@@ -63,6 +63,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppointmentManager.cs" />
     <Compile Include="Contacts.xaml.cs">
       <DependentUpon>Contacts.xaml</DependentUpon>
     </Compile>
